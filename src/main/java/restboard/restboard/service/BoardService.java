@@ -52,5 +52,11 @@ public class BoardService {
         return list;
     }
 
+    @Transactional
+    public void addReadCount(Long boardId) {
+        Board board = boardRepository.findById(boardId).get();
+        board.addReadCount();
+    }
+
 
 }
