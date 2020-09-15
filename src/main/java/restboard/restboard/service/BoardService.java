@@ -45,7 +45,7 @@ public class BoardService {
     }
 
     public List<Response> findAll(){
-        List<Board> boardList = boardRepository.findAll();
+        List<Board> boardList = boardRepository.getBoardsDesc();
         List<Response> list = boardList.stream()
                 .map(m -> new Response(m))
                 .collect(Collectors.toList());
