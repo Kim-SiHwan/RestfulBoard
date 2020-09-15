@@ -1,0 +1,125 @@
+<html xmlns xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.ney.nz/thymeleaf/layout"
+      layout:decorate="~{/layout/defaultLayout}">
+<head>
+    <meta charset="UTF-8">
+    <title>List</title>
+</head>
+<body>
+
+<div layout:fragment="content">
+    <div class="panel-body">
+
+        <div id="boardDiv" style="width: 900px;margin: 0 auto;">
+            <button id="makeBoard" class="btn btn-primary btn-sm" data-target="#myModal" data-toggle="modal"
+            style="position: fixed; bottom: 100px; right: 400px">작성하기</button>
+            <a id="goTopLink" class="btn btn-outline-warning btn-sm" role="button" href="#"
+            style="position: fixed; bottom: 50px;right: 400px;width: 34px"><i class="fa fa-angle-double-up"></i></a>
+            <table class="table table-hover" style="width: 900px">
+                <thead>
+                <th width="50">No</th>
+                <th width="150">Writer</th>
+                <th width="300">Title</th>
+                <th width="50">Read</th>
+                <th width="30"></th>
+                </thead>
+                <tbody id="tbody">
+
+                </tbody>
+            </table>
+
+        </div>
+
+        <div class="modal fade" id="myModal">
+            <div class="modal-dialog">
+                <div class="modal-content">
+
+                    <div class="modal-header">
+                        <p class="modal-title" id="modalHeader">글 쓰기</p>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+                    <div class="modal-body" id="boardTitle">
+                        Modal body..
+                    </div>
+                    <div class="modal-body" id="boardContent">
+                        Modal body..
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-outline-success" id="submitBtn"
+                                data-dismiss="modal">작성</button>
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">닫기</button>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<th:block layout:fragment="script">
+    <script th:inline="javascript" th:src="@{'/js/boards.js'}"></script>
+    <script th:inline="javascript">
+        $(document).on('ready', function (e) {
+
+            boardManager.getAll(drawList);
+
+            function drawList(data) {
+                var str = "";
+                for (var i = 0; i < data.length; i++) {
+                    var list = data[i];
+                    str += "<tr><td>" + list.boardId + "</td>" +
+                        "<td>" + list.writer + "</td>" +
+                        "<td data-target='#myModal' data-toggle='modal' role='button' id='readBoard'>" + list.title +
+                        "</td><td>"+list.read+"</td><td><a id='deleteBtn' role='button' class='btn btn-outline-danger btn-sm' href='"+list.boardId+"'>&times;</a></td>";
+                }
+                $('#tbody').html(str);
+            }
+
+            function getBoard(data){
+                $('#submitBtn').hide();
+                $('#boardTitle').html("작성자 : "+data.writer+"<input type='text' class='form-control' width='300' readonly='readonly' value='"+data.title+"'>");
+                $('#boardContent').html("<textarea class='form-control' rows='10' readonly='readonly'>"+data.content+"</textarea>")
+            }
+
+            $(document).on('click','#makeBoard',function (e){
+                $('#boardTitle').html("<input type='text' class='form-control' width='300'>")
+                $('#boardContent').html("<textarea class='form-control' rows='10'></textarea>")
+            });
+
+            $(document).on('click','#submitBtn',function (e){
+                var title=$('#boardTitle').children().val();
+                var content=$('#boardContent').children().val();
+                var obj = {title : title, content : content, writer : "User"};
+                console.log(obj);
+                boardManager.add(obj,drawList);
+            });
+
+            $(document).on('click','#readBoard',function (e){
+                var boardId = $(this).prev().prev().text();
+                var obj={boardId : boardId};
+                boardManager.getOne(obj,getBoard);
+            });
+
+            $(document).on('click','#deleteBtn',function (e){
+                e.preventDefault();
+                var boardId = $(this).attr('href');
+                var obj={boardId : boardId};
+                boardManager.remove(obj,drawList);
+            });
+
+
+
+
+
+
+        })
+
+
+    </script>
+</th:block>
+
+
+</body>
+</html>
+
