@@ -66,8 +66,9 @@
 
             function drawList(data) {
                 var str = "";
-                for (var i = 0; i < data.length; i++) {
-                    var list = data[i];
+                for (var i = 0; i < data.data.length; i++) {
+                    var list = data.data[i];
+
                     str += "<tr><td>" + list.boardId + "</td>" +
                         "<td>" + list.writer + "</td>" +
                         "<td data-target='#myModal' data-toggle='modal' role='button' id='readBoard'>" + list.title +

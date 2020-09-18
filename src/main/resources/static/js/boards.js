@@ -6,6 +6,7 @@ var boardManager = (function () {
             dataType: 'json',
             success: callback
         });
+        console.log(callback);
     };
 
     var getOne = function (obj,callback) {
