@@ -1,5 +1,7 @@
 package restboard.restboard.dto;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.Getter;
 import restboard.restboard.domain.Board;
 
@@ -21,5 +23,11 @@ public class Response {
         this.writer= board.getWriter();
         this.read=0;
         this.createDate=LocalDateTime.now();
+    }
+
+    @Data
+    @AllArgsConstructor
+    public static class Result<T>{
+        private T data;
     }
 }

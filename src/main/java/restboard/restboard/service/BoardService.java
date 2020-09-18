@@ -44,12 +44,12 @@ public class BoardService {
         return boardResponse;
     }
 
-    public List<Response> findAll(){
+    public Response.Result findAll(){
         List<Board> boardList = boardRepository.getBoardsDesc();
         List<Response> list = boardList.stream()
                 .map(m -> new Response(m))
                 .collect(Collectors.toList());
-        return list;
+        return new Response.Result(list);
     }
 
     @Transactional

@@ -18,9 +18,8 @@ import java.util.List;
 public class BoardController {
     private final BoardService boardService;
 
-    public List<Response> getAll(){
-        List<Response> list = boardService.findAll();
-        return list;
+    public Response.Result getAll(){
+        return boardService.findAll();
     }
 
     @GetMapping
