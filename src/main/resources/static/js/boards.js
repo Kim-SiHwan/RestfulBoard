@@ -6,12 +6,9 @@ var boardManager = (function () {
             dataType: 'json',
             success: callback
         });
-        console.log(callback);
     };
 
     var getOne = function (obj,callback) {
-        console.log(obj);
-        console.log(callback);
         $.ajax({
             type:'get',
             url: '/boards/'+obj.boardId,
